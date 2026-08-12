@@ -9,8 +9,11 @@ const TaiwanMap3D = defineAsyncComponent(() => import('./TaiwanMap3D.vue'))
 const props = defineProps({
   countyColor: { type: Function, default: () => null },
   countyValue: { type: Function, default: () => 0 },
-  maxValue: { type: Number, default: 100 },
-  maxHeight: { type: Number, default: 55 },
+  minSpan: { type: Number, default: 1 },
+  domainMin: { type: Number, default: null },
+  minHeight: { type: Number, default: 6 },
+  maxHeight: { type: Number, default: 95 },
+  valueLabel: { type: String, default: '' },
   points: { type: Array, default: () => [] },
 })
 
@@ -24,7 +27,15 @@ const mode = ref('3d')
     </button>
 
     <Suspense v-if="mode === '3d'">
-      <TaiwanMap3D :county-color="countyColor" :county-value="countyValue" :max-value="maxValue" :max-height="maxHeight" />
+      <TaiwanMap3D
+        :county-color="countyColor"
+        :county-value="countyValue"
+        :min-span="minSpan"
+        :domain-min="domainMin"
+        :min-height="minHeight"
+        :max-height="maxHeight"
+        :value-label="valueLabel"
+      />
       <template #fallback>
         <div class="loading">載入 3D 地圖中…</div>
       </template>

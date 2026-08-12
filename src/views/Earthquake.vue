@@ -66,7 +66,15 @@ const tableRows = computed(() =>
         :accent-color="getIntensityMeta(maxIntensityOfLatest)?.textColor"
       />
 
-      <MapView :county-value="countyValue" :county-color="countyColor" :max-value="7" :max-height="55" />
+      <!-- 震度 0 是「沒感覺」，是有意義的零點，所以下界釘死在 0，
+           高度才會忠實反映震度大小，而不是跟著當次地震的最小震度浮動 -->
+      <MapView
+        :county-value="countyValue"
+        :county-color="countyColor"
+        :domain-min="0"
+        :min-span="3"
+        value-label="震度"
+      />
 
       <div class="legend">
         <span v-for="lv in [
