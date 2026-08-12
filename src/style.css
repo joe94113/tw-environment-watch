@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* === 測站儀表板 Design Tokens：冷色調、儀器感，讓 AQI/震度的資料色彩當主角 === */
+  --bg: #e7ebec;
+  --panel: #f6f8f8;
+  --ink: #14232a;
+  --ink-soft: #4c5b60;
+  --line: #7f8c8f;
+  --accent: #1f5c73;
+
+  /* 官方 AQI 六級分級色（環境部標準，不是自訂配色）*/
+  --aqi-good: #5cb85c;
+  --aqi-moderate: #f4d03f;
+  --aqi-sensitive: #e67e22;
+  --aqi-unhealthy: #d32f2f;
+  --aqi-very-unhealthy: #8e44ad;
+  --aqi-hazardous: #7b241c;
+
+  /* 上面六色當「色塊」（地圖、圖例圓點、徽章底色）用；
+     當「文字顏色」一定要用下面這組加深過的版本，
+     原色當文字在淺色背景上對比度不合格（例如黃色只有 1.41:1）*/
+  --aqi-good-text: #376e37;
+  --aqi-moderate-text: #7a6820;
+  --aqi-sensitive-text: #a15818;
+  --aqi-unhealthy-text: #d32f2f;
+  --aqi-very-unhealthy-text: #8e44ad;
+  --aqi-hazardous-text: #7b241c;
+
+  /* 地震震度：用單一色相的深淺表示強度，跟 AQI 的六色分級語意區隔開 */
+  --quake-1: #f4c7c3;
+  --quake-2: #e8968e;
+  --quake-3: #d9645a;
+  --quake-4: #b8362b;
+  --quake-5: #7b241c;
+
+  /* 同上,q1-q3 當文字色也不合格,一樣準備深色版本 */
+  --quake-1-text: #7a6462;
+  --quake-2-text: #8b5a55;
+  --quake-3-text: #ae5048;
+  --quake-4-text: #b8362b;
+  --quake-5-text: #7b241c;
+
+  --font-display: 'Noto Sans TC', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+
+  color-scheme: light;
+  color: var(--ink);
+  background: var(--bg);
+  font: 16px/1.7 var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

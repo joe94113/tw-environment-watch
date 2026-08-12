@@ -1,0 +1,98 @@
+name: Update Data and Deploy
+
+on:
+  schedule:
+    # 每 3 小時抓一次資料，覺得太頻繁或不夠新，直接改這行 cron 設定就好
+    - cron: '0 */3 * * *'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch latest air quality data
+        run: node scripts/fetch-air-quality.js
+        env:
+          MOENV_API_KEY: ${{ secrets.MOENV_API_KEY }}
+
+      - name: Fetch latest earthquake data
+        run: node scripts/fetch-earthquake.js
+        env:
+          CWA_API_KEY: ${{ secrets.CWA_API_KEY }}
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/air-quality-latest.json src/data/air-quality/ src/data/earthquakes.json
+          git diff --staged --quiet || git commit -m "chore: 自動更新資料 $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
+
+  build:
+    needs: update-data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      # 專案頁面 (repo 不叫 <user>.github.io) 網址會帶 /<repo>/ 前綴，自動判斷
+      - name: Determine base path
+        id: base
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          if [[ "$REPO_NAME" == *.github.io ]]; then
+            echo "path=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=/$REPO_NAME/" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        run: npm run build
+        env:
+          GITHUB_PAGES_BASE: ${{ steps.base.outputs.path }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
