@@ -1,6 +1,42 @@
 {
   "earthquakes": [
     {
+      "id": 115054,
+      "time": "2026-08-13T03:54:22+08:00",
+      "magnitude": 4.4,
+      "depth": 40.2,
+      "location": "屏東縣政府南南東方  91.7  公里 (位於屏東縣近海)",
+      "lon": 120.71,
+      "lat": 21.88,
+      "counties": [
+        {
+          "countyId": "10013",
+          "intensity": 3
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10013",
+          "intensity": 3
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026054"
+    },
+    {
       "id": 115053,
       "time": "2026-07-31T00:58:36+08:00",
       "magnitude": 4.7,
