@@ -56,7 +56,14 @@ const tableRows = computed(() =>
         :accent-color="avgLevel?.textColor"
       />
 
-      <MapView :county-value="countyValue" :county-color="countyColor" :max-value="300" :max-height="55" />
+      <!-- minSpan 60 大約是一個 AQI 等級的寬度：全台都在同一級的日子，
+           地圖畫出來就該是平的，不該把幾點的差距放大成明顯高低 -->
+      <MapView
+        :county-value="countyValue"
+        :county-color="countyColor"
+        :min-span="60"
+        value-label="AQI"
+      />
 
       <div class="legend">
         <span v-for="lv in [
