@@ -1,3 +1,932 @@
 {
-  "earthquakes": []
+  "earthquakes": [
+    {
+      "id": 115053,
+      "time": "2026-07-31T00:58:36+08:00",
+      "magnitude": 4.7,
+      "depth": 20.2,
+      "location": "臺東縣政府北北東方  44.1  公里 (位於臺東縣成功鎮)",
+      "lon": 121.36,
+      "lat": 23.1,
+      "counties": [
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "64000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10009",
+          "intensity": 2
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "10010",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        },
+        {
+          "countyId": "10013",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026053"
+    },
+    {
+      "id": 115052,
+      "time": "2026-07-27T10:14:49+08:00",
+      "magnitude": 4.8,
+      "depth": 9.6,
+      "location": "臺南市政府東北東方  36.7  公里 (位於臺南市楠西區)",
+      "lon": 120.49,
+      "lat": 23.17,
+      "counties": [
+        {
+          "countyId": "67000",
+          "intensity": 4
+        },
+        {
+          "countyId": "64000",
+          "intensity": 4
+        },
+        {
+          "countyId": "10010",
+          "intensity": 3
+        },
+        {
+          "countyId": "10009",
+          "intensity": 3
+        },
+        {
+          "countyId": "10020",
+          "intensity": 2
+        },
+        {
+          "countyId": "10007",
+          "intensity": 2
+        },
+        {
+          "countyId": "10013",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 1
+        },
+        {
+          "countyId": "10005",
+          "intensity": 1
+        },
+        {
+          "countyId": "10016",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026052"
+    },
+    {
+      "id": 115051,
+      "time": "2026-07-26T20:36:17+08:00",
+      "magnitude": 5.6,
+      "depth": 95.7,
+      "location": "新北市政府東南東方  35.8  公里 (位於新北市雙溪區)",
+      "lon": 121.8,
+      "lat": 24.91,
+      "counties": [
+        {
+          "countyId": "10002",
+          "intensity": 3
+        },
+        {
+          "countyId": "65000",
+          "intensity": 3
+        },
+        {
+          "countyId": "63000",
+          "intensity": 3
+        },
+        {
+          "countyId": "68000",
+          "intensity": 3
+        },
+        {
+          "countyId": "10004",
+          "intensity": 3
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "66000",
+          "intensity": 3
+        },
+        {
+          "countyId": "10005",
+          "intensity": 3
+        },
+        {
+          "countyId": "10017",
+          "intensity": 2
+        },
+        {
+          "countyId": "10018",
+          "intensity": 2
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "10007",
+          "intensity": 2
+        },
+        {
+          "countyId": "10009",
+          "intensity": 2
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "10010",
+          "intensity": 1
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026051"
+    },
+    {
+      "id": 115050,
+      "time": "2026-07-15T22:44:30+08:00",
+      "magnitude": 4,
+      "depth": 5.2,
+      "location": "嘉義縣政府東北東方  38.5  公里 (位於嘉義縣梅山鄉)",
+      "lon": 120.64,
+      "lat": 23.59,
+      "counties": [
+        {
+          "countyId": "10009",
+          "intensity": 4
+        },
+        {
+          "countyId": "10010",
+          "intensity": 3
+        },
+        {
+          "countyId": "10020",
+          "intensity": 2
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 4
+        },
+        {
+          "countyId": "10010",
+          "intensity": 3
+        },
+        {
+          "countyId": "10020",
+          "intensity": 2
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026050"
+    },
+    {
+      "id": 115049,
+      "time": "2026-07-08T23:47:21+08:00",
+      "magnitude": 4.3,
+      "depth": 20.5,
+      "location": "花蓮縣政府西南西方  21.5  公里 (位於花蓮縣秀林鄉)",
+      "lon": 121.45,
+      "lat": 23.88,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "66000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10002",
+          "intensity": 2
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10004",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 4
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026049"
+    },
+    {
+      "id": 115048,
+      "time": "2026-07-02T07:06:06+08:00",
+      "magnitude": 4,
+      "depth": 5,
+      "location": "花蓮縣政府南南西方  41.0  公里 (位於花蓮縣豐濱鄉)",
+      "lon": 121.48,
+      "lat": 23.64,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 4
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026048"
+    },
+    {
+      "id": 115047,
+      "time": "2026-05-20T20:25:35+08:00",
+      "magnitude": 4.8,
+      "depth": 27.3,
+      "location": "臺東縣政府北北東方  63.9  公里 (位於臺東縣近海)",
+      "lon": 121.44,
+      "lat": 23.27,
+      "counties": [
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10009",
+          "intensity": 2
+        },
+        {
+          "countyId": "10010",
+          "intensity": 1
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 1
+        },
+        {
+          "countyId": "64000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        },
+        {
+          "countyId": "10013",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10009",
+          "intensity": 2
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026047"
+    },
+    {
+      "id": 115046,
+      "time": "2026-05-20T09:11:58+08:00",
+      "magnitude": 4.8,
+      "depth": 27.8,
+      "location": "臺東縣政府北北東方  65.3  公里 (位於臺東縣近海)",
+      "lon": 121.45,
+      "lat": 23.28,
+      "counties": [
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10009",
+          "intensity": 2
+        },
+        {
+          "countyId": "10010",
+          "intensity": 2
+        },
+        {
+          "countyId": "10007",
+          "intensity": 2
+        },
+        {
+          "countyId": "64000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026046"
+    },
+    {
+      "id": 115045,
+      "time": "2026-05-17T08:46:14+08:00",
+      "magnitude": 5.1,
+      "depth": 15.5,
+      "location": "南投縣政府東北東方  33.5  公里 (位於南投縣埔里鎮)",
+      "lon": 121,
+      "lat": 24,
+      "counties": [
+        {
+          "countyId": "10008",
+          "intensity": 4
+        },
+        {
+          "countyId": "66000",
+          "intensity": 3
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10005",
+          "intensity": 3
+        },
+        {
+          "countyId": "10007",
+          "intensity": 2
+        },
+        {
+          "countyId": "10009",
+          "intensity": 2
+        },
+        {
+          "countyId": "10002",
+          "intensity": 2
+        },
+        {
+          "countyId": "10004",
+          "intensity": 2
+        },
+        {
+          "countyId": "10010",
+          "intensity": 2
+        },
+        {
+          "countyId": "10018",
+          "intensity": 2
+        },
+        {
+          "countyId": "68000",
+          "intensity": 2
+        },
+        {
+          "countyId": "65000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 1
+        },
+        {
+          "countyId": "63000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10016",
+          "intensity": 1
+        },
+        {
+          "countyId": "10008",
+          "intensity": 4
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026045"
+    },
+    {
+      "id": 115044,
+      "time": "2026-05-13T18:43:30+08:00",
+      "magnitude": 5,
+      "depth": 15.8,
+      "location": "花蓮縣政府北方  3.6  公里 (位於花蓮縣花蓮市)",
+      "lon": 121.62,
+      "lat": 24.02,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10008",
+          "intensity": 3
+        },
+        {
+          "countyId": "66000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10002",
+          "intensity": 2
+        },
+        {
+          "countyId": "68000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "10005",
+          "intensity": 1
+        },
+        {
+          "countyId": "10004",
+          "intensity": 1
+        },
+        {
+          "countyId": "65000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10010",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10008",
+          "intensity": 3
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026044"
+    },
+    {
+      "id": 115043,
+      "time": "2026-05-12T14:53:32+08:00",
+      "magnitude": 5.6,
+      "depth": 22.9,
+      "location": "臺東縣政府東北方  66.8  公里 (位於臺灣東部海域)",
+      "lon": 121.54,
+      "lat": 23.24,
+      "counties": [
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10008",
+          "intensity": 3
+        },
+        {
+          "countyId": "10009",
+          "intensity": 3
+        },
+        {
+          "countyId": "10007",
+          "intensity": 3
+        },
+        {
+          "countyId": "64000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10010",
+          "intensity": 2
+        },
+        {
+          "countyId": "67000",
+          "intensity": 2
+        },
+        {
+          "countyId": "66000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10020",
+          "intensity": 2
+        },
+        {
+          "countyId": "10002",
+          "intensity": 2
+        },
+        {
+          "countyId": "10005",
+          "intensity": 2
+        },
+        {
+          "countyId": "10013",
+          "intensity": 1
+        },
+        {
+          "countyId": "68000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10004",
+          "intensity": 1
+        },
+        {
+          "countyId": "10018",
+          "intensity": 1
+        },
+        {
+          "countyId": "65000",
+          "intensity": 1
+        },
+        {
+          "countyId": "63000",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026043"
+    },
+    {
+      "id": 115042,
+      "time": "2026-05-11T00:59:24+08:00",
+      "magnitude": 4.2,
+      "depth": 19.3,
+      "location": "花蓮縣政府西南方  36.2  公里 (位於花蓮縣萬榮鄉)",
+      "lon": 121.4,
+      "lat": 23.73,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026042"
+    },
+    {
+      "id": 115041,
+      "time": "2026-05-09T03:26:39+08:00",
+      "magnitude": 4.9,
+      "depth": 71,
+      "location": "宜蘭縣政府東南東方  27.0  公里 (位於臺灣東部海域)",
+      "lon": 122.01,
+      "lat": 24.64,
+      "counties": [
+        {
+          "countyId": "10002",
+          "intensity": 2
+        },
+        {
+          "countyId": "68000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10004",
+          "intensity": 2
+        },
+        {
+          "countyId": "65000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10015",
+          "intensity": 1
+        },
+        {
+          "countyId": "63000",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "10005",
+          "intensity": 1
+        },
+        {
+          "countyId": "10018",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026041"
+    },
+    {
+      "id": 115040,
+      "time": "2026-05-08T07:08:25+08:00",
+      "magnitude": 4.4,
+      "depth": 20.9,
+      "location": "花蓮縣政府南南西方  31.0  公里 (位於花蓮縣豐濱鄉)",
+      "lon": 121.53,
+      "lat": 23.72,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10010",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026040"
+    },
+    {
+      "id": 115039,
+      "time": "2026-05-08T04:57:34+08:00",
+      "magnitude": 4.6,
+      "depth": 25.4,
+      "location": "花蓮縣政府東北方  30.2  公里 (位於臺灣東部海域)",
+      "lon": 121.86,
+      "lat": 24.16,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10002",
+          "intensity": 3
+        },
+        {
+          "countyId": "10008",
+          "intensity": 3
+        },
+        {
+          "countyId": "66000",
+          "intensity": 2
+        },
+        {
+          "countyId": "68000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10004",
+          "intensity": 1
+        },
+        {
+          "countyId": "65000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10010",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "66000",
+          "intensity": 2
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026039"
+    },
+    {
+      "id": 115038,
+      "time": "2026-05-04T14:59:21+08:00",
+      "magnitude": 4,
+      "depth": 5,
+      "location": "宜蘭縣政府南方  17.0  公里 (位於宜蘭縣南澳鄉)",
+      "lon": 121.78,
+      "lat": 24.58,
+      "counties": [
+        {
+          "countyId": "10002",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 1
+        },
+        {
+          "countyId": "68000",
+          "intensity": 1
+        },
+        {
+          "countyId": "65000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "10002",
+          "intensity": 4
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026038"
+    }
+  ]
 }
