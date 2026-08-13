@@ -26,6 +26,13 @@ function countyValue(id) {
   return latestCountyIntensity.value[id] ?? 0
 }
 
+// 震度的 0 是「這次沒感覺」，是有意義的讀數，不能顯示成「沒有資料」
+function formatIntensity(value) {
+  const meta = getIntensityMeta(value)
+  if (!meta) return '無資料'
+  return value === 0 ? '無感' : `震度 ${value}・${meta.label}`
+}
+
 // 「最近一次地震」讀者真正在意的是「多久以前」，所以相對時間放前面，
 // 絕對時間放括號裡備查。相對時間在頁面載入時算，不會自己跳動。
 const latestWhen = computed(() => {
@@ -86,6 +93,7 @@ const tableRows = computed(() =>
         :domain-min="0"
         :min-span="3"
         value-label="震度"
+        :format-value="formatIntensity"
       />
 
       <div class="legend">

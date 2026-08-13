@@ -23,14 +23,23 @@ const props = defineProps({
   maxHeight: { type: Number, default: 70 },
   // 顯示在角落的高度刻度說明，例如 'AQI'、'震度'
   valueLabel: { type: String, default: '' },
+  // (value) => 字串，決定提示框裡數值怎麼寫。不給就用 valueLabel + 數值。
+  // 震度會需要它，因為 0 代表「無感」而不是「沒有資料」。
+  formatValue: { type: Function, default: null },
 })
 
 const canvasEl = ref(null)
 const scaleLabel = ref('')
+const hover = ref(null) // { name, value, x, y }
 // 取景範圍（只含本島），由 buildCountyGroup 累積、frameScene 使用
 const frameBox = new THREE.Box3()
 let renderer, scene, camera, controls, animationId, countyGroup
 let resizeObserver
+// 只對縣市實體做 raycast，描邊的 LineLoop 不參與
+let pickTargets = []
+let hoveredMesh = null
+const raycaster = new THREE.Raycaster()
+const pointer = new THREE.Vector2()
 
 // 完整精度的海岸線資料點太密，擠出 3D 時每一小段海岸線都變成一面
 // 朝向略有不同的牆，燈光照下去產生毛刺／刺蝟感。3D 用簡化過的版本，
@@ -188,10 +197,18 @@ function heightOf(value, domain) {
   return props.minHeight + t * (props.maxHeight - props.minHeight)
 }
 
+function describeValue(value) {
+  if (props.formatValue) return props.formatValue(value)
+  if (typeof value !== 'number' || !Number.isFinite(value)) return '無資料'
+  const label = props.valueLabel ? `${props.valueLabel} ` : ''
+  return `${label}${value}`
+}
+
 function buildCountyGroup() {
   const group = new THREE.Group()
   const domain = computeDomain()
   frameBox.makeEmpty()
+  pickTargets = []
 
   eachRing((feature, points2D, extent) => {
     const id = feature.properties.id
@@ -218,7 +235,9 @@ function buildCountyGroup() {
     const mesh = new THREE.Mesh(geometry, material)
     mesh.userData.countyId = id
     mesh.userData.countyName = feature.properties.name
+    mesh.userData.valueText = describeValue(props.countyValue(id))
     group.add(mesh)
+    pickTargets.push(mesh)
 
     if (extent.footprint >= FRAME_MIN_FOOTPRINT) {
       geometry.computeBoundingBox()
@@ -356,15 +375,68 @@ function rebuildCounties() {
     scene.remove(countyGroup)
     disposeGroup(countyGroup)
   }
+  // 舊的 mesh 連同 material 都被 dispose 了，指標不能留著
+  hoveredMesh = null
+  hover.value = null
   countyGroup = buildCountyGroup()
   scene.add(countyGroup)
   frameScene()
 }
 
+// 滑過的縣市稍微打亮，讓游標跟提示框指的是哪一塊沒有懸念
+function setHovered(mesh) {
+  if (hoveredMesh === mesh) return
+  hoveredMesh?.material.emissive.setHex(0x000000)
+  hoveredMesh = mesh
+  hoveredMesh?.material.emissive.setHex(0x2b2b2b)
+}
+
+function updateHover(event) {
+  if (!camera || !renderer) return
+
+  const rect = renderer.domElement.getBoundingClientRect()
+  if (rect.width === 0 || rect.height === 0) return
+
+  const offsetX = event.clientX - rect.left
+  const offsetY = event.clientY - rect.top
+  pointer.x = (offsetX / rect.width) * 2 - 1
+  pointer.y = -(offsetY / rect.height) * 2 + 1
+
+  // matrixWorld 平常是 renderer.render() 幫忙更新的，但那掛在
+  // requestAnimationFrame 上。分頁在背景時 rAF 會被節流甚至停掉，這時候
+  // 拿到的還是舊矩陣，raycast 會全部射空。這裡自己更新一次，picking 就
+  // 不必依賴「剛好已經畫過一張」。
+  camera.updateMatrixWorld()
+
+  raycaster.setFromCamera(pointer, camera)
+  const hit = raycaster.intersectObjects(pickTargets, false)[0]
+
+  if (!hit) {
+    clearHover()
+    return
+  }
+
+  setHovered(hit.object)
+  hover.value = {
+    name: hit.object.userData.countyName,
+    value: hit.object.userData.valueText,
+    // 夾在容器內，貼著左右邊緣的縣市才不會把提示框推到看不見的地方
+    x: Math.min(Math.max(offsetX, 60), rect.width - 60),
+    y: offsetY,
+  }
+}
+
+function clearHover() {
+  setHovered(null)
+  hover.value = null
+}
+
 function initScene() {
   const el = canvasEl.value
-  const width = el.clientWidth
-  const height = el.clientHeight
+  // 容器還沒完成版面配置時會量到 0。先給 1 避免產生一張沒有寬度的畫布，
+  // 真正的尺寸交給下面的 ResizeObserver（observe() 當下就會呼叫一次）。
+  const width = el.clientWidth || 1
+  const height = el.clientHeight || 1
 
   scene = new THREE.Scene()
   scene.background = new THREE.Color(resolveColor('var(--bg)'))
@@ -391,6 +463,11 @@ function initScene() {
   scene.add(sun)
 
   rebuildCounties()
+
+  // pointer 事件同時涵蓋滑鼠跟觸控；手機上點一下也看得到是哪個縣市
+  renderer.domElement.addEventListener('pointermove', updateHover)
+  renderer.domElement.addEventListener('pointerdown', updateHover)
+  renderer.domElement.addEventListener('pointerleave', clearHover)
 
   const animate = () => {
     animationId = requestAnimationFrame(animate)
@@ -419,6 +496,9 @@ onMounted(initScene)
 onBeforeUnmount(() => {
   cancelAnimationFrame(animationId)
   resizeObserver?.disconnect()
+  renderer?.domElement.removeEventListener('pointermove', updateHover)
+  renderer?.domElement.removeEventListener('pointerdown', updateHover)
+  renderer?.domElement.removeEventListener('pointerleave', clearHover)
   if (countyGroup) disposeGroup(countyGroup)
   outlineMaterial.dispose()
   controls?.dispose()
@@ -433,6 +513,16 @@ watch(() => [props.countyValue, props.countyColor], rebuildCounties)
   <div ref="canvasEl" class="canvas-host" role="img" aria-label="3D 立體地圖視覺化，完整數據請見下方表格">
     <p class="hint" aria-hidden="true">拖曳旋轉、滾輪縮放</p>
     <p v-if="scaleLabel" class="scale" aria-hidden="true">{{ scaleLabel }}</p>
+
+    <div
+      v-if="hover"
+      class="tooltip"
+      :style="{ left: hover.x + 'px', top: hover.y + 'px' }"
+      aria-hidden="true"
+    >
+      <span class="tooltip-name">{{ hover.name }}</span>
+      <span class="tooltip-value">{{ hover.value }}</span>
+    </div>
   </div>
 </template>
 
@@ -467,5 +557,25 @@ watch(() => [props.countyValue, props.countyColor], rebuildCounties)
 .scale {
   right: 0.75rem;
   font-family: var(--font-mono);
+}
+.tooltip {
+  position: absolute;
+  /* 定位點是游標，往上挪開一段才不會被自己的手指或游標蓋住 */
+  transform: translate(-50%, calc(-100% - 0.75rem));
+  padding: 0.35rem 0.6rem;
+  border-radius: 5px;
+  background: var(--ink);
+  color: var(--panel);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+}
+.tooltip-value {
+  font-family: var(--font-mono);
+  opacity: 0.85;
 }
 </style>

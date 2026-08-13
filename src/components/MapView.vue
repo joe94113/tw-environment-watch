@@ -14,10 +14,14 @@ const props = defineProps({
   minHeight: { type: Number, default: 5 },
   maxHeight: { type: Number, default: 70 },
   valueLabel: { type: String, default: '' },
+  formatValue: { type: Function, default: null },
   points: { type: Array, default: () => [] },
 })
 
-const mode = ref('3d')
+// 預先渲染是在 Node 裡跑的，WebGL 畫不出來，所以 SSR 時輸出 2D 版本。
+// 這樣爬蟲跟首屏拿到的是真的有內容的 SVG 地圖，不是一個空 div；
+// 瀏覽器端掛載後就換回 3D。
+const mode = ref(import.meta.env.SSR ? '2d' : '3d')
 </script>
 
 <template>
@@ -35,6 +39,7 @@ const mode = ref('3d')
         :min-height="minHeight"
         :max-height="maxHeight"
         :value-label="valueLabel"
+        :format-value="formatValue"
       />
       <template #fallback>
         <div class="loading">載入 3D 地圖中…</div>

@@ -5,10 +5,21 @@ import StatHero from '../components/StatHero.vue'
 import DataTable from '../components/DataTable.vue'
 import { getAqiLevel } from '../utils/aqi.js'
 import { maxAqiByCounty, averageAqi } from '../utils/aggregate-aqi.js'
+import { formatDateTime, formatRelative } from '../utils/datetime.js'
 import latest from '../data/air-quality-latest.json'
 
 const stations = latest.stations ?? []
 const hasData = stations.length > 0
+
+// 只寫「每 3 小時更新一次」使用者還是不知道手上這份是幾點的資料，
+// 把 updatedAt 實際秀出來。抓不到時間就退回原本的說明文字。
+const updatedLabel = computed(() => {
+  const absolute = formatDateTime(latest.updatedAt)
+  if (!absolute) return '資料每 3 小時更新一次'
+
+  const relative = formatRelative(latest.updatedAt)
+  return relative ? `${absolute} 更新（${relative}）` : `${absolute} 更新`
+})
 
 const countyAqi = computed(() => maxAqiByCounty(stations))
 const avg = computed(() => averageAqi(stations))
@@ -18,8 +29,10 @@ function countyColor(id) {
   const level = getAqiLevel(countyAqi.value[id])
   return level ? level.color : null
 }
+// 沒有測站的縣市回 null 而不是 0：AQI 0 不是一個真實讀數，回 0 會讓
+// 提示框寫成「AQI 0」，看起來像空氣好到爆表。null 會被當成沒有資料。
 function countyValue(id) {
-  return countyAqi.value[id] ?? 0
+  return countyAqi.value[id] ?? null
 }
 
 const tableColumns = [
@@ -52,7 +65,7 @@ const tableRows = computed(() =>
       <StatHero
         eyebrow="全台平均 AQI"
         :value="String(avg)"
-        label="資料每 3 小時更新一次"
+        :label="updatedLabel"
         :accent-color="avgLevel?.textColor"
       />
 
