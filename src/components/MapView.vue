@@ -11,8 +11,8 @@ const props = defineProps({
   countyValue: { type: Function, default: () => 0 },
   minSpan: { type: Number, default: 1 },
   domainMin: { type: Number, default: null },
-  minHeight: { type: Number, default: 6 },
-  maxHeight: { type: Number, default: 95 },
+  minHeight: { type: Number, default: 5 },
+  maxHeight: { type: Number, default: 70 },
   valueLabel: { type: String, default: '' },
   points: { type: Array, default: () => [] },
 })
