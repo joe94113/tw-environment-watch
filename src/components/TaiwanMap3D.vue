@@ -18,23 +18,102 @@ const props = defineProps({
   // 指標的零點有意義時（例如震度 0 就是沒感覺）把下界釘在這個值，
   // 不要浮動；AQI 沒有這種零點，維持 null 讓下界跟著資料跑。
   domainMin: { type: Number, default: null },
-  minHeight: { type: Number, default: 6 },
-  maxHeight: { type: Number, default: 95 },
+  minHeight: { type: Number, default: 5 },
+  // 相對於 420x520 的地圖底面積，再高就會變成一片採石場而不是地圖
+  maxHeight: { type: Number, default: 70 },
   // 顯示在角落的高度刻度說明，例如 'AQI'、'震度'
   valueLabel: { type: String, default: '' },
 })
 
 const canvasEl = ref(null)
 const scaleLabel = ref('')
+// 取景範圍（只含本島），由 buildCountyGroup 累積、frameScene 使用
+const frameBox = new THREE.Box3()
 let renderer, scene, camera, controls, animationId, countyGroup
 let resizeObserver
 
 // 完整精度的海岸線資料點太密，擠出 3D 時每一小段海岸線都變成一面
 // 朝向略有不同的牆，燈光照下去產生毛刺／刺蝟感。3D 用簡化過的版本，
 // 2D 平面圖（TaiwanMap.vue）跟資料表格不受影響，繼續用完整精度。
-const simplifiedTopo = simplify(presimplify(topoData), 0.001)
+//
+// 但門檻不能開太大。實測 0.001 會把馬祖（連江縣）6 個部分全部壓成 0 寬度，
+// 擠出來就是一片浮在海上的薄板；0.0002 保得住馬祖（3.8）跟澎湖（16.1），
+// 點數 1092 也還在完整精度 3032 的三分之一左右，毛刺一樣壓得下來。
+const simplifiedTopo = simplify(presimplify(topoData), 0.0002)
+
+// 就算不簡化，本來就有幾個小島小到投影後不足 1 個單位（實測 5 個）。
+// 這種環擠出來是一根沒有厚度的針，只會變成畫面上的雜訊，直接不畫。
+const MIN_FOOTPRINT = 1
+
+// 小琉球、蘭嶼、綠島這些碎塊投影後只有 2~4 個單位寬，擠到跟本島一樣高
+// 就是一根浮在海上的針，只會變成畫面上的雜訊 —— 而且那麼細的柱子本來就
+// 讀不出高度。小於這個尺寸的地塊一律畫成平的，等級交給顏色表示。
+// 門檻取 10：最小的實心行政區嘉義市有 9.2，剛好還是留著高度的那一邊。
+const FLAT_BELOW = 10
+
+// 框景只看「本島」。離島散得很開（連島嶼在內整張圖是 420x520，本島本身
+// 只有 158x296），全部算進去的話鏡頭得拉到很遠，台灣本體會縮成中間一小塊。
+// 只用夠大的塊去算取景範圍，離島落在畫面邊緣或稍微外面，滾輪縮小就看得到。
+const FRAME_MIN_FOOTPRINT = 20
 const geo = topojson.feature(simplifiedTopo, simplifiedTopo.objects.map)
 const projection = d3.geoMercator().fitSize([420, 520], geo)
+
+function ringToPoints(ring) {
+  return ring
+    .map(([lon, lat]) => {
+      const projected = projection([lon, lat])
+      if (!projected) return null
+      // 投影出來是螢幕座標（y 往下為南），底下 rotateX 會把 y 轉成世界的
+      // -Z，相機又架在 +Z，不先把 y 反號的話整個島會南北顛倒（北部跑到
+      // 畫面下方），但東西向還是正的，看起來就是一個鏡像的台灣。
+      return new THREE.Vector2(projected[0] - 210, -(projected[1] - 260))
+    })
+    .filter(Boolean)
+}
+
+function ringExtent(points) {
+  const xs = points.map((p) => p.x)
+  const ys = points.map((p) => p.y)
+  const minX = Math.min(...xs)
+  const maxX = Math.max(...xs)
+  const minY = Math.min(...ys)
+  const maxY = Math.max(...ys)
+  return { minX, maxX, minY, maxY, footprint: Math.max(maxX - minX, maxY - minY) }
+}
+
+function eachRing(callback) {
+  for (const feature of geo.features) {
+    const polygons =
+      feature.geometry.type === 'Polygon' ? [feature.geometry.coordinates] : feature.geometry.coordinates
+    for (const polygon of polygons) {
+      const points = ringToPoints(polygon[0])
+      if (points.length < 3) continue
+      const extent = ringExtent(points)
+      if (extent.footprint < MIN_FOOTPRINT) continue
+      callback(feature, points, extent)
+    }
+  }
+}
+
+// 本島在投影平面上的範圍，模組載入時算一次（只跟地理形狀有關，跟資料無關）。
+// 用來判斷一塊地是不是離島 —— 離島一律畫平的，理由見 buildCountyGroup。
+const MAIN_ISLAND = (() => {
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity
+  eachRing((feature, points, extent) => {
+    if (extent.footprint < FRAME_MIN_FOOTPRINT) return
+    minX = Math.min(minX, extent.minX)
+    maxX = Math.max(maxX, extent.maxX)
+    minY = Math.min(minY, extent.minY)
+    maxY = Math.max(maxY, extent.maxY)
+  })
+  return { minX, maxX, minY, maxY }
+})()
+
+function isOffshore(extent) {
+  const cx = (extent.minX + extent.maxX) / 2
+  const cy = (extent.minY + extent.maxY) / 2
+  return cx < MAIN_ISLAND.minX || cx > MAIN_ISLAND.maxX || cy < MAIN_ISLAND.minY || cy > MAIN_ISLAND.maxY
+}
 
 const DEFAULT_COLOR = '#9aa5a8'
 
@@ -112,55 +191,48 @@ function heightOf(value, domain) {
 function buildCountyGroup() {
   const group = new THREE.Group()
   const domain = computeDomain()
+  frameBox.makeEmpty()
 
-  for (const feature of geo.features) {
+  eachRing((feature, points2D, extent) => {
     const id = feature.properties.id
-    const height = heightOf(props.countyValue(id), domain)
     const color = resolveColor(props.countyColor(id))
 
-    const polygons =
-      feature.geometry.type === 'Polygon' ? [feature.geometry.coordinates] : feature.geometry.coordinates
+    // 離島一律畫平的。金門、澎湖、馬祖離本島很遠又只有十幾個單位大，擠到
+    // 跟本島同高就變成一片浮在海上的棕色木板，比資料本身還搶眼。壓平之後
+    // 它們的數值改由顏色分級表達，跟本島上同樣小的嘉義市、基隆市不衝突
+    // ——那兩個在本島範圍內，高度照常畫。
+    const flatten = extent.footprint < FLAT_BELOW || isOffshore(extent)
+    const partHeight = flatten ? props.minHeight : heightOf(props.countyValue(id), domain)
 
-    for (const polygon of polygons) {
-      const outer = polygon[0]
-      const points2D = outer
-        .map(([lon, lat]) => {
-          const projected = projection([lon, lat])
-          if (!projected) return null
-          // 投影出來是螢幕座標（y 往下為南），底下 rotateX 會把 y 轉成世界的
-          // -Z，相機又架在 +Z，不先把 y 反號的話整個島會南北顛倒（北部跑到
-          // 畫面下方），但東西向還是正的，看起來就是一個鏡像的台灣。
-          return new THREE.Vector2(projected[0] - 210, -(projected[1] - 260))
-        })
-        .filter(Boolean)
+    const shape = new THREE.Shape(points2D)
+    const geometry = new THREE.ExtrudeGeometry(shape, { depth: partHeight, bevelEnabled: false })
+    // ExtrudeGeometry 預設往 +Z 擠出（螢幕外），轉 90 度讓它變成「往上」
+    geometry.rotateX(-Math.PI / 2)
 
-      if (points2D.length < 3) continue
+    const material = new THREE.MeshStandardMaterial({
+      color,
+      flatShading: true,
+      roughness: 0.85,
+      metalness: 0,
+    })
+    const mesh = new THREE.Mesh(geometry, material)
+    mesh.userData.countyId = id
+    mesh.userData.countyName = feature.properties.name
+    group.add(mesh)
 
-      const shape = new THREE.Shape(points2D)
-      const geometry = new THREE.ExtrudeGeometry(shape, { depth: height, bevelEnabled: false })
-      // ExtrudeGeometry 預設往 +Z 擠出（螢幕外），轉 90 度讓它變成「往上」
-      geometry.rotateX(-Math.PI / 2)
-
-      const material = new THREE.MeshStandardMaterial({
-        color,
-        flatShading: true,
-        roughness: 0.85,
-        metalness: 0,
-      })
-      const mesh = new THREE.Mesh(geometry, material)
-      mesh.userData.countyId = id
-      mesh.userData.countyName = feature.properties.name
-      group.add(mesh)
-
-      // 相鄰縣市常常是同一個等級同一個顏色，沒有邊界線會糊成一大塊，
-      // 在頂面邊緣描一圈線，縣市界線跟高低落差才分得出來。
-      const ring = new THREE.BufferGeometry().setFromPoints(
-        points2D.map((p) => new THREE.Vector3(p.x, p.y, height + 0.2))
-      )
-      ring.rotateX(-Math.PI / 2)
-      group.add(new THREE.LineLoop(ring, outlineMaterial))
+    if (extent.footprint >= FRAME_MIN_FOOTPRINT) {
+      geometry.computeBoundingBox()
+      frameBox.union(geometry.boundingBox)
     }
-  }
+
+    // 相鄰縣市常常是同一個等級同一個顏色，沒有邊界線會糊成一大塊，
+    // 在頂面邊緣描一圈線，縣市界線跟高低落差才分得出來。
+    const ring = new THREE.BufferGeometry().setFromPoints(
+      points2D.map((p) => new THREE.Vector3(p.x, p.y, partHeight + 0.2))
+    )
+    ring.rotateX(-Math.PI / 2)
+    group.add(new THREE.LineLoop(ring, outlineMaterial))
+  })
 
   if (domain && props.valueLabel) {
     scaleLabel.value = `高度對應 ${props.valueLabel} ${Math.round(domain.lo)}–${Math.round(domain.hi)}`
@@ -179,6 +251,105 @@ function disposeGroup(group) {
   })
 }
 
+// 預設視角方向（從南方斜上方看），仰角約 38 度
+const VIEW_DIRECTION = new THREE.Vector3(0, 0.62, 0.79).normalize()
+const FIT_PADDING = 1.12
+
+/**
+ * 依實際畫出來的量體把鏡頭拉到「剛好框得住」的距離。
+ *
+ * 之前是寫死 camera.position + target，結果高度一改（或換成手機的窄畫布）
+ * 就框不準：上面空一大片、南部又被切在畫面外。
+ *
+ * 這裡不是用外接球去算距離。台灣本島是 158 寬 x 296 深的長條，外接球的
+ * 半徑得取對角線的一半，整個島會縮在畫面中間只佔三成，四周全是空白。
+ * 改成把外接框的 8 個角投影到目前鏡頭的座標軸上，直接算出「這個角度下
+ * 剛好塞滿」的距離，同樣不會切到邊，但畫面利用率高很多。
+ */
+function frameScene() {
+  if (!countyGroup || !camera || !controls) return
+
+  const box = frameBox.isEmpty() ? new THREE.Box3().setFromObject(countyGroup) : frameBox
+  if (box.isEmpty()) return
+
+  const center = box.getCenter(new THREE.Vector3())
+  const radius = box.getSize(new THREE.Vector3()).length() / 2
+
+  const corners = []
+  for (let i = 0; i < 8; i++) {
+    corners.push(
+      new THREE.Vector3(
+        i & 1 ? box.max.x : box.min.x,
+        i & 2 ? box.max.y : box.min.y,
+        i & 4 ? box.max.z : box.min.z
+      )
+    )
+  }
+
+  // 保留使用者目前轉到的角度，只重算中心點跟距離
+  const dir = camera.position.clone().sub(controls.target)
+  if (dir.lengthSq() < 1e-6) dir.copy(VIEW_DIRECTION)
+  dir.normalize()
+
+  // 鏡頭的水平／垂直軸；俯視到接近正上方時 cross 會退化，退回一組固定軸
+  const right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir)
+  if (right.lengthSq() < 1e-6) right.set(1, 0, 0)
+  right.normalize()
+  const up = new THREE.Vector3().crossVectors(dir, right).normalize()
+
+  const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)
+  const tanH = tanV * camera.aspect
+
+  // 先抓距離、再把投影後的內容置中，來回幾次收斂。
+  //
+  // 只算一次會偏：斜著看的時候，畫面上緣對應的是遠端的角、下緣對應的是
+  // 近端的角，近的那一角透視放大得多，光是「把外接框中心對準畫面中心」
+  // 會讓島整個偏下（實測上緣空 140px、下緣只剩 30px）。
+  const target = center.clone()
+  let distance = 0
+  const offset = new THREE.Vector3()
+
+  for (let iteration = 0; iteration < 4; iteration++) {
+    distance = 0
+    for (const corner of corners) {
+      offset.copy(corner).sub(target)
+      const depth = offset.dot(dir)
+      distance = Math.max(
+        distance,
+        (Math.abs(offset.dot(right)) * FIT_PADDING) / tanH + depth,
+        (Math.abs(offset.dot(up)) * FIT_PADDING) / tanV + depth
+      )
+    }
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity
+    for (const corner of corners) {
+      offset.copy(corner).sub(target)
+      const depthFromCamera = distance - offset.dot(dir)
+      if (depthFromCamera <= 1e-6) continue
+      const px = offset.dot(right) / depthFromCamera
+      const py = offset.dot(up) / depthFromCamera
+      minX = Math.min(minX, px); maxX = Math.max(maxX, px)
+      minY = Math.min(minY, py); maxY = Math.max(maxY, py)
+    }
+    if (!Number.isFinite(minX)) break
+
+    target.addScaledVector(right, ((minX + maxX) / 2) * distance)
+    target.addScaledVector(up, ((minY + maxY) / 2) * distance)
+  }
+
+  controls.target.copy(target)
+  camera.position.copy(target).addScaledVector(dir, distance)
+
+  const camToCenter = camera.position.distanceTo(center)
+  camera.near = Math.max(0.1, camToCenter - radius * 1.2)
+  camera.far = camToCenter + radius * 1.2
+  camera.updateProjectionMatrix()
+
+  controls.minDistance = distance * 0.3
+  controls.maxDistance = distance * 3
+  controls.update()
+}
+
 function rebuildCounties() {
   if (!scene) return
   if (countyGroup) {
@@ -187,6 +358,7 @@ function rebuildCounties() {
   }
   countyGroup = buildCountyGroup()
   scene.add(countyGroup)
+  frameScene()
 }
 
 function initScene() {
@@ -197,8 +369,9 @@ function initScene() {
   scene = new THREE.Scene()
   scene.background = new THREE.Color(resolveColor('var(--bg)'))
 
-  camera = new THREE.PerspectiveCamera(45, width / height, 1, 2000)
-  camera.position.set(0, 240, 360)
+  camera = new THREE.PerspectiveCamera(45, width / height || 1, 0.1, 4000)
+  // 只是給 frameScene 一個起始方向，實際距離由它算
+  camera.position.copy(VIEW_DIRECTION).multiplyScalar(500)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setSize(width, height)
@@ -206,12 +379,9 @@ function initScene() {
   el.appendChild(renderer.domElement)
 
   controls = new OrbitControls(camera, renderer.domElement)
-  // 柱子變高之後，視覺重心跟著往上跑，鏡頭焦點也抬高一點才不會偏下
-  controls.target.set(0, 20, 0)
   controls.maxPolarAngle = Math.PI / 2.1
-  controls.minDistance = 120
-  controls.maxDistance = 700
   controls.enableDamping = true
+  // minDistance/maxDistance 由 frameScene 依實際量體設定
 
   // 環境光壓低、主光加強並且從側邊斜打，柱子的側面才會跟頂面明顯分層。
   // 光源太平均的話高度差只剩輪廓可以判斷，會更看不出來。
@@ -232,9 +402,14 @@ function initScene() {
   resizeObserver = new ResizeObserver(() => {
     const w = el.clientWidth
     const h = el.clientHeight
+    // 容器還沒完成版面配置時會量到 0，setSize(0, h) 會留下一張沒有寬度的
+    // 畫布，而且 aspect 變成 0／NaN 之後投影矩陣就壞了，直接跳過這一次
+    if (w === 0 || h === 0) return
+
     camera.aspect = w / h
-    camera.updateProjectionMatrix()
     renderer.setSize(w, h)
+    // 畫布比例變了，可視範圍跟著變，重新框一次才不會又切到南部
+    frameScene()
   })
   resizeObserver.observe(el)
 }
