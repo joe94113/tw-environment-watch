@@ -4,6 +4,7 @@ import MapView from '../components/MapView.vue'
 import StatHero from '../components/StatHero.vue'
 import DataTable from '../components/DataTable.vue'
 import { getIntensityMeta, maxIntensityByCounty } from '../utils/earthquake.js'
+import { formatDateTime, formatRelative } from '../utils/datetime.js'
 import store from '../data/earthquakes.json'
 
 const earthquakes = store.earthquakes ?? []
@@ -25,6 +26,15 @@ function countyValue(id) {
   return latestCountyIntensity.value[id] ?? 0
 }
 
+// 「最近一次地震」讀者真正在意的是「多久以前」，所以相對時間放前面，
+// 絕對時間放括號裡備查。相對時間在頁面載入時算，不會自己跳動。
+const latestWhen = computed(() => {
+  if (!latest) return ''
+  const relative = formatRelative(latest.time)
+  const absolute = formatDateTime(latest.time)
+  return relative ? `${relative}（${absolute}）` : absolute
+})
+
 const maxIntensityOfLatest = computed(() => {
   if (!latest) return null
   const values = latest.counties.map((c) => c.intensity)
@@ -45,7 +55,9 @@ const tableRows = computed(() =>
     const meta = getIntensityMeta(max)
     return {
       id: eq.id,
-      time: eq.time,
+      time: formatDateTime(eq.time),
+      // 顯示值已經不能拿來排序了，原始 ISO 字串留給 DataTable 當排序依據
+      timeSort: eq.time,
       location: eq.location,
       magnitude: eq.magnitude,
       depth: eq.depth,
@@ -62,7 +74,7 @@ const tableRows = computed(() =>
       <StatHero
         eyebrow="最近一次地震"
         :value="`M${latest.magnitude}`"
-        :label="`${latest.location}．${latest.time}`"
+        :label="`${latest.location}．${latestWhen}`"
         :accent-color="getIntensityMeta(maxIntensityOfLatest)?.textColor"
       />
 
