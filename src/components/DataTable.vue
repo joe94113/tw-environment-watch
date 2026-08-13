@@ -10,11 +10,21 @@ const props = defineProps({
 const sortKey = ref(props.columns[0]?.key)
 const sortDesc = ref(true)
 
+// 顯示值不一定適合拿來排序（例如時間欄顯示的是 '2026/08/13 03:54'，
+// 跨年份就排不對），所以每一欄都可以另外給一個 <key>Sort 當排序依據，
+// 跟既有的 <key>Style 同一套命名慣例。沒給就沿用顯示值。
+function sortValue(row, key) {
+  return row[key + 'Sort'] ?? row[key]
+}
+
 const sortedRows = computed(() =>
   [...props.rows].sort((a, b) => {
-    const av = a[sortKey.value]
-    const bv = b[sortKey.value]
-    const cmp = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv), 'zh-Hant')
+    const av = sortValue(a, sortKey.value)
+    const bv = sortValue(b, sortKey.value)
+    const cmp =
+      typeof av === 'number' && typeof bv === 'number'
+        ? av - bv
+        : String(av).localeCompare(String(bv), 'zh-Hant')
     return sortDesc.value ? -cmp : cmp
   })
 )

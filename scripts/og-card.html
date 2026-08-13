@@ -1,0 +1,63 @@
+<!doctype html>
+<!--
+  分享預覽圖（public/og-image.png）的來源。要改圖就改這個檔，然後重新產生：
+
+  chrome --headless=new --hide-scrollbars --window-size=1200,630 \
+         --screenshot=public/og-image.png scripts/og-card.html
+
+  刻意不放真實數據：預覽圖是靜態檔案，放當下的 AQI 幾天後就是錯的。
+-->
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=IBM+Plex+Mono:wght@500&display=swap');
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        width: 1200px; height: 630px;
+        background: #e7ebec;
+        font-family: 'Noto Sans TC', system-ui, sans-serif;
+        color: #14232a;
+        display: flex; flex-direction: column;
+        padding: 72px 80px;
+        position: relative;
+        overflow: hidden;
+      }
+      .eyebrow {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 26px; letter-spacing: 0.18em; text-transform: uppercase;
+        color: #4c5b60; margin-bottom: 28px;
+      }
+      h1 { font-size: 82px; font-weight: 900; line-height: 1.12; letter-spacing: -0.02em; }
+      .sub { margin-top: 26px; font-size: 31px; color: #4c5b60; line-height: 1.5; max-width: 720px; }
+      .legend { margin-top: auto; display: flex; gap: 30px; align-items: center; font-size: 23px; color: #4c5b60; }
+      .item { display: flex; align-items: center; gap: 11px; }
+      .dot { width: 20px; height: 20px; border-radius: 50%; }
+      .bars { position: absolute; right: 74px; bottom: 96px; display: flex; align-items: flex-end; gap: 15px; }
+      .bar { width: 46px; border-radius: 4px 4px 0 0; }
+      .rule { position: absolute; left: 0; top: 0; width: 14px; height: 100%; background: #1f5c73; }
+    </style>
+  </head>
+  <body>
+    <div class="rule"></div>
+    <p class="eyebrow">Taiwan Environment Watch</p>
+    <h1>台灣環境監測</h1>
+    <p class="sub">全台空氣品質 AQI 與近期有感地震震度<br />資料來自環境部與中央氣象署，每 3 小時自動更新</p>
+
+    <div class="bars">
+      <div class="bar" style="height: 96px;  background: #5cb85c;"></div>
+      <div class="bar" style="height: 158px; background: #f4d03f;"></div>
+      <div class="bar" style="height: 122px; background: #f4d03f;"></div>
+      <div class="bar" style="height: 210px; background: #e67e22;"></div>
+      <div class="bar" style="height: 142px; background: #f4d03f;"></div>
+      <div class="bar" style="height: 262px; background: #d32f2f;"></div>
+    </div>
+
+    <div class="legend">
+      <span class="item"><span class="dot" style="background:#5cb85c"></span>良好</span>
+      <span class="item"><span class="dot" style="background:#f4d03f"></span>普通</span>
+      <span class="item"><span class="dot" style="background:#e67e22"></span>敏感族群不良</span>
+      <span class="item"><span class="dot" style="background:#d32f2f"></span>紅害</span>
+    </div>
+  </body>
+</html>
