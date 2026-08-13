@@ -15,7 +15,11 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # 不砍進行中的部署，改成排隊。部署跑到一半被取消有機會留下只上傳一半
+  # 的產物，而 build 現在是三步（client -> ssr -> prerender）跑得更久，
+  # 排程部署撞上一次 push 就被砍掉的機會又更大。官方 Pages 範本用的也是
+  # false，代價只是同時觸發時後面那次要等前面跑完。
+  cancel-in-progress: false
 
 jobs:
   update-data:
