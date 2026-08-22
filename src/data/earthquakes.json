@@ -1,6 +1,78 @@
 {
   "earthquakes": [
     {
+      "id": 115056,
+      "time": "2026-08-22T11:40:15+08:00",
+      "magnitude": 5.1,
+      "depth": 27.8,
+      "location": "宜蘭縣政府東南方  41.7  公里 (位於臺灣東部海域)",
+      "lon": 121.99,
+      "lat": 24.42,
+      "counties": [
+        {
+          "countyId": "10002",
+          "intensity": 3
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "65000",
+          "intensity": 2
+        },
+        {
+          "countyId": "68000",
+          "intensity": 2
+        },
+        {
+          "countyId": "66000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "10004",
+          "intensity": 2
+        },
+        {
+          "countyId": "63000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10007",
+          "intensity": 2
+        },
+        {
+          "countyId": "10017",
+          "intensity": 1
+        },
+        {
+          "countyId": "10005",
+          "intensity": 1
+        },
+        {
+          "countyId": "10018",
+          "intensity": 1
+        },
+        {
+          "countyId": "10010",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026056"
+    },
+    {
       "id": 115055,
       "time": "2026-08-15T19:30:16+08:00",
       "magnitude": 5.2,
