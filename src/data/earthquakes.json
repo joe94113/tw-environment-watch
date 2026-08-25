@@ -1,6 +1,98 @@
 {
   "earthquakes": [
     {
+      "id": 115057,
+      "time": "2026-08-25T15:00:11+08:00",
+      "magnitude": 5.8,
+      "depth": 13.1,
+      "location": "臺東縣政府東南東方  48.0  公里 (位於臺灣東南部海域)",
+      "lon": 121.6,
+      "lat": 22.63,
+      "counties": [
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10010",
+          "intensity": 3
+        },
+        {
+          "countyId": "10009",
+          "intensity": 3
+        },
+        {
+          "countyId": "67000",
+          "intensity": 3
+        },
+        {
+          "countyId": "10020",
+          "intensity": 3
+        },
+        {
+          "countyId": "10013",
+          "intensity": 2
+        },
+        {
+          "countyId": "64000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "10007",
+          "intensity": 2
+        },
+        {
+          "countyId": "66000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10002",
+          "intensity": 2
+        },
+        {
+          "countyId": "10005",
+          "intensity": 2
+        },
+        {
+          "countyId": "10004",
+          "intensity": 1
+        },
+        {
+          "countyId": "10016",
+          "intensity": 1
+        },
+        {
+          "countyId": "10018",
+          "intensity": 1
+        },
+        {
+          "countyId": "68000",
+          "intensity": 1
+        },
+        {
+          "countyId": "65000",
+          "intensity": 1
+        },
+        {
+          "countyId": "63000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 4
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026057"
+    },
+    {
       "id": 115056,
       "time": "2026-08-22T11:40:15+08:00",
       "magnitude": 5.1,
