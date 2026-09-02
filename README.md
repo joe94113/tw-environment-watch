@@ -181,5 +181,5 @@ src/
 
 ## 授權
 
-程式碼目前尚未指定授權條款。地圖資料 `taiwan-counties.topo.json` 為 MIT 授權；
+程式碼採用 [MIT License](LICENSE)。地圖資料 `taiwan-counties.topo.json` 同為 MIT 授權；
 空氣品質與地震資料的使用請依環境部、中央氣象署各自的開放資料條款。
