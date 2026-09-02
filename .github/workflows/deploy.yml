@@ -34,15 +34,31 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # 上游 API 掛掉不該連帶把整個部署擋掉。build 有 needs: update-data，
+      # 這兩步任一失敗，建置跟部署都會被整個跳過 —— 即使 repo 裡的資料是
+      # 好的、即使這次改的根本是跟資料無關的程式碼。改成失敗也繼續，網站
+      # 帶著既有資料照常重建上線，下一次排程再補抓就好。
+      # 腳本本身已經會對 5xx／429／連線失敗重試，走到這裡代表重試也沒用。
       - name: Fetch latest air quality data
+        id: fetch-aqi
+        continue-on-error: true
         run: node scripts/fetch-air-quality.js
         env:
           MOENV_API_KEY: ${{ secrets.MOENV_API_KEY }}
 
       - name: Fetch latest earthquake data
+        id: fetch-eq
+        continue-on-error: true
         run: node scripts/fetch-earthquake.js
         env:
           CWA_API_KEY: ${{ secrets.CWA_API_KEY }}
+
+      # continue-on-error 會讓整個 job 顯示成功，失敗就這樣被吞掉沒人發現。
+      # 補一個 annotation，Actions 頁面上才會有明顯的黃色警告可以追。
+      - name: Report fetch failures
+        if: steps.fetch-aqi.outcome == 'failure' || steps.fetch-eq.outcome == 'failure'
+        run: |
+          echo "::warning::資料抓取有失敗（空品：${{ steps.fetch-aqi.outcome }}／地震：${{ steps.fetch-eq.outcome }}），這次沿用既有資料繼續部署"
 
       - name: Commit updated data
         run: |
