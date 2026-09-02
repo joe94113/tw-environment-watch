@@ -8,6 +8,7 @@
 // 舊的月份檔案不會再被改動，新的一個月會自動開一個新檔案。
 
 import { readJson, writeJson, todayISO } from './lib/json-store.js'
+import { fetchWithRetry } from './lib/fetch-retry.js'
 
 const API_KEY = process.env.MOENV_API_KEY
 if (!API_KEY) {
@@ -23,15 +24,13 @@ function monthlyPath(dateISO) {
 
 async function fetchAqi() {
   const url = `https://data.moenv.gov.tw/api/v2/aqx_p_432?limit=1000&api_key=${API_KEY}`
-  const res = await fetch(url)
-  if (!res.ok) {
-    throw new Error(`AQI API 回傳錯誤：${res.status} ${res.statusText}`)
-  }
+  const res = await fetchWithRetry(url, { label: 'AQI API' })
   const json = await res.json()
   const records = json.records ?? json
-  if (!Array.isArray(records) || records.length === 0) {
-    // 拿到 0 筆通常代表欄位/回應格式跟預期不一樣，把原始回應印出來方便對照
-    console.warn('API 回傳看起來是空的，原始回應：', JSON.stringify(json).slice(0, 500))
+  if (!Array.isArray(records)) {
+    // 格式跟預期不一樣，把原始回應印出來方便對照
+    console.warn('API 回傳的不是陣列，原始回應：', JSON.stringify(json).slice(0, 500))
+    return []
   }
   return records
 }
@@ -52,6 +51,18 @@ function normalizeRecord(r) {
 async function main() {
   const raw = await fetchAqi()
   const stations = raw.map(normalizeRecord).filter((s) => s.lon && s.lat)
+
+  // API 有時候會 200 但內容是空的。這種時候絕對不能照樣寫檔：writeJson 是
+  // 無條件覆寫，寫進去就等於把好的資料換成 stations: []，接著被 commit、
+  // 部署上線，畫面直接變成「還沒有資料」。這比 500 更糟 —— 500 至少大聲
+  // 失敗且什麼都不會動，這個是安靜地把網站清空。
+  // 保留既有資料、讓這一步失敗（workflow 端有 continue-on-error，部署會
+  // 帶著舊資料照常進行）。
+  if (stations.length === 0) {
+    console.log('::warning::AQI API 回傳 0 筆測站資料，保留既有資料不覆寫')
+    console.error('沒有取得任何測站資料，維持 ' + LATEST_PATH + ' 原本的內容')
+    process.exit(1)
+  }
 
   writeJson(LATEST_PATH, {
     updatedAt: new Date().toISOString(),

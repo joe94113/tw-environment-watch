@@ -8,6 +8,7 @@
 // 先 console.log(raw) 把實際回傳結構印出來對照調整。
 
 import { readJson, writeJson } from './lib/json-store.js'
+import { fetchWithRetry } from './lib/fetch-retry.js'
 import { COUNTY_NAME_TO_ID } from './lib/county-names.js'
 
 const API_KEY = process.env.CWA_API_KEY
@@ -20,10 +21,7 @@ const DATA_PATH = 'src/data/earthquakes.json'
 
 async function fetchEarthquakes() {
   const url = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization=${API_KEY}&format=JSON`
-  const res = await fetch(url)
-  if (!res.ok) {
-    throw new Error(`地震 API 回傳錯誤：${res.status} ${res.statusText}`)
-  }
+  const res = await fetchWithRetry(url, { label: '地震 API' })
   const json = await res.json()
   return json.records?.Earthquake ?? []
 }
@@ -61,6 +59,13 @@ function normalize(record) {
 
 async function main() {
   const raw = await fetchEarthquakes()
+
+  // 空結果在這裡不會毀資料（下面是併進既有 store，沒有新的就等於沒動作），
+  // 所以不像空品那支要中止，但還是留個記號，免得 API 默默壞掉沒人發現。
+  if (raw.length === 0) {
+    console.log('::warning::地震 API 回傳 0 筆資料，這次沒有新增任何地震')
+  }
+
   const fresh = raw.map(normalize)
 
   const store = readJson(DATA_PATH, { earthquakes: [] })
