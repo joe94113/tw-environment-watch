@@ -1,6 +1,34 @@
 {
   "earthquakes": [
     {
+      "id": 115059,
+      "time": "2026-09-04T17:11:00+08:00",
+      "magnitude": 4.5,
+      "depth": 13.7,
+      "location": "臺東縣政府東南東方  44.9  公里 (位於臺灣東南部海域)",
+      "lon": 121.57,
+      "lat": 22.65,
+      "counties": [
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 4
+        },
+        {
+          "countyId": "10015",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026059"
+    },
+    {
       "id": 115058,
       "time": "2026-08-27T05:47:20+08:00",
       "magnitude": 5.2,
