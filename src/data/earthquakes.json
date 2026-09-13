@@ -1,6 +1,66 @@
 {
   "earthquakes": [
     {
+      "id": 115062,
+      "time": "2026-09-14T03:21:35+08:00",
+      "magnitude": 4.7,
+      "depth": 17.6,
+      "location": "花蓮縣政府南南西方  54.9  公里 (位於花蓮縣萬榮鄉)",
+      "lon": 121.35,
+      "lat": 23.56,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 4
+        },
+        {
+          "countyId": "10008",
+          "intensity": 4
+        },
+        {
+          "countyId": "10014",
+          "intensity": 2
+        },
+        {
+          "countyId": "10010",
+          "intensity": 2
+        },
+        {
+          "countyId": "10020",
+          "intensity": 2
+        },
+        {
+          "countyId": "67000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "64000",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10002",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10005",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026062"
+    },
+    {
       "id": 115061,
       "time": "2026-09-11T19:24:56+08:00",
       "magnitude": 4.5,
