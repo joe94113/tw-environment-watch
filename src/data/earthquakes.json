@@ -1,6 +1,62 @@
 {
   "earthquakes": [
     {
+      "id": 115064,
+      "time": "2026-09-22T05:16:13+08:00",
+      "magnitude": 4.2,
+      "depth": 7.5,
+      "location": "臺南市政府東北東方  43.9  公里 (位於臺南市楠西區)",
+      "lon": 120.54,
+      "lat": 23.21,
+      "counties": [
+        {
+          "countyId": "67000",
+          "intensity": 4
+        },
+        {
+          "countyId": "10010",
+          "intensity": 3
+        },
+        {
+          "countyId": "64000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "67000",
+          "intensity": 4
+        },
+        {
+          "countyId": "10010",
+          "intensity": 3
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026064"
+    },
+    {
       "id": 115063,
       "time": "2026-09-14T06:44:41+08:00",
       "magnitude": 4.9,
