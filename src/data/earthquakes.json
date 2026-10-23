@@ -1,6 +1,102 @@
 {
   "earthquakes": [
     {
+      "id": 115071,
+      "time": "2026-10-24T04:58:03+08:00",
+      "magnitude": 4.8,
+      "depth": 16.8,
+      "location": "花蓮縣政府東南東方  30.4  公里 (位於臺灣東部海域)",
+      "lon": 121.9,
+      "lat": 23.89,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10008",
+          "intensity": 3
+        },
+        {
+          "countyId": "10002",
+          "intensity": 2
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "10002",
+          "intensity": 2
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026071"
+    },
+    {
+      "id": 115070,
+      "time": "2026-10-24T04:48:17+08:00",
+      "magnitude": 5,
+      "depth": 15.4,
+      "location": "花蓮縣政府東南東方  31.2  公里 (位於臺灣東部海域)",
+      "lon": 121.9,
+      "lat": 23.88,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10002",
+          "intensity": 2
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10010",
+          "intensity": 1
+        },
+        {
+          "countyId": "10004",
+          "intensity": 1
+        },
+        {
+          "countyId": "65000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10007",
+          "intensity": 1
+        },
+        {
+          "countyId": "10005",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026070"
+    },
+    {
       "id": 115069,
       "time": "2026-10-13T17:30:10+08:00",
       "magnitude": 4.3,
