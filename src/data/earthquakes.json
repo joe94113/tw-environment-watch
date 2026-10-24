@@ -1,6 +1,50 @@
 {
   "earthquakes": [
     {
+      "id": 115072,
+      "time": "2026-10-24T09:25:57+08:00",
+      "magnitude": 4,
+      "depth": 5,
+      "location": "高雄市政府東北方  75.7  公里 (位於高雄市桃源區)",
+      "lon": 120.74,
+      "lat": 23.18,
+      "counties": [
+        {
+          "countyId": "64000",
+          "intensity": 4
+        },
+        {
+          "countyId": "10010",
+          "intensity": 2
+        },
+        {
+          "countyId": "67000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "10009",
+          "intensity": 1
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        },
+        {
+          "countyId": "10013",
+          "intensity": 1
+        },
+        {
+          "countyId": "64000",
+          "intensity": 4
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026072"
+    },
+    {
       "id": 115071,
       "time": "2026-10-24T04:58:03+08:00",
       "magnitude": 4.8,
