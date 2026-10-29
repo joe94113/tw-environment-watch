@@ -1,6 +1,34 @@
 {
   "earthquakes": [
     {
+      "id": 115074,
+      "time": "2026-10-30T04:37:43+08:00",
+      "magnitude": 4.4,
+      "depth": 22.7,
+      "location": "花蓮縣政府東北方  29.6  公里 (位於臺灣東部海域)",
+      "lon": 121.83,
+      "lat": 24.17,
+      "counties": [
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "10002",
+          "intensity": 3
+        },
+        {
+          "countyId": "10008",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026074"
+    },
+    {
       "id": 115073,
       "time": "2026-10-29T14:38:47+08:00",
       "magnitude": 4,
