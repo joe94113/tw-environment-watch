@@ -1,6 +1,86 @@
 {
   "earthquakes": [
     {
+      "id": 115075,
+      "time": "2026-11-01T16:20:07+08:00",
+      "magnitude": 5.6,
+      "depth": 119.5,
+      "location": "宜蘭縣政府東北東方  39.4  公里 (位於臺灣東部海域)",
+      "lon": 122.11,
+      "lat": 24.89,
+      "counties": [
+        {
+          "countyId": "10002",
+          "intensity": 3
+        },
+        {
+          "countyId": "10015",
+          "intensity": 3
+        },
+        {
+          "countyId": "65000",
+          "intensity": 2
+        },
+        {
+          "countyId": "63000",
+          "intensity": 2
+        },
+        {
+          "countyId": "68000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10004",
+          "intensity": 2
+        },
+        {
+          "countyId": "10018",
+          "intensity": 2
+        },
+        {
+          "countyId": "66000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "10005",
+          "intensity": 2
+        },
+        {
+          "countyId": "10007",
+          "intensity": 2
+        },
+        {
+          "countyId": "10009",
+          "intensity": 2
+        },
+        {
+          "countyId": "10010",
+          "intensity": 2
+        },
+        {
+          "countyId": "67000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10017",
+          "intensity": 1
+        },
+        {
+          "countyId": "10014",
+          "intensity": 1
+        },
+        {
+          "countyId": "10020",
+          "intensity": 1
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026075"
+    },
+    {
       "id": 115074,
       "time": "2026-10-30T04:37:43+08:00",
       "magnitude": 4.4,
