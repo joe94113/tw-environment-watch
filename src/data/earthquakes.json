@@ -1,6 +1,62 @@
 {
   "earthquakes": [
     {
+      "id": 115079,
+      "time": "2026-11-09T12:21:57+08:00",
+      "magnitude": 4.2,
+      "depth": 11,
+      "location": "雲林縣政府東南東方  23.2  公里 (位於雲林縣古坑鄉)",
+      "lon": 120.72,
+      "lat": 23.59,
+      "counties": [
+        {
+          "countyId": "10010",
+          "intensity": 4
+        },
+        {
+          "countyId": "10009",
+          "intensity": 3
+        },
+        {
+          "countyId": "10020",
+          "intensity": 3
+        },
+        {
+          "countyId": "10008",
+          "intensity": 2
+        },
+        {
+          "countyId": "67000",
+          "intensity": 2
+        },
+        {
+          "countyId": "10007",
+          "intensity": 2
+        },
+        {
+          "countyId": "64000",
+          "intensity": 1
+        },
+        {
+          "countyId": "66000",
+          "intensity": 1
+        },
+        {
+          "countyId": "10015",
+          "intensity": 1
+        },
+        {
+          "countyId": "10016",
+          "intensity": 1
+        },
+        {
+          "countyId": "10010",
+          "intensity": 4
+        }
+      ],
+      "reportUrl": "https://scweb.cwa.gov.tw/zh-tw/earthquake/details/2026079"
+    },
+    {
       "id": 115078,
       "time": "2026-11-06T12:01:13+08:00",
       "magnitude": 4,
